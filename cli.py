@@ -18,7 +18,11 @@ import ast
 def _discovered_imports() -> list[tuple[str, str, str]]:
     """Discover every imported module and classify it without a dependency list."""
     modules: set[tuple[str, str]] = set()
-    source_files = [PROJECT_DIR / "cool.py", *PROJECT_DIR.glob("cool_app/**/*.py")]
+    source_files = [
+        *PROJECT_DIR.glob("*.py"),
+        *PROJECT_DIR.glob("commands/**/*.py"),
+        *PROJECT_DIR.glob("cool_app/**/*.py"),
+    ]
     stdlib = getattr(sys, "stdlib_module_names", set())
     for source_file in source_files:
         if not source_file.is_file():

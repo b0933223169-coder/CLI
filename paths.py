@@ -7,7 +7,12 @@ LOGIN_URL = f"{BASE_URL}/login/index.php"
 DEFAULT_TARGET = f"{BASE_URL}/time/time_view_detail_by_people.php?id=2055519"
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36"
 
-PROJECT_DIR = Path(__file__).resolve().parent.parent
+PACKAGE_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = (
+    PACKAGE_DIR.parent
+    if (PACKAGE_DIR / "cool_app").is_dir() and not (PACKAGE_DIR / "cli.py").is_file()
+    else PACKAGE_DIR
+)
 
 def _base_dir() -> Path:
     try:

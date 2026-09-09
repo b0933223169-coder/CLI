@@ -5,6 +5,7 @@ cookies/
 cookies.txt
 urls.txt
 colors.json
+.cool_history
 *.bak.*
 
 # Python generated files
