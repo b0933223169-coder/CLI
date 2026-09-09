@@ -1,0 +1,19 @@
+# Local account and authentication data
+accounts.json
+.cool_passwd
+cookies/
+cookies.txt
+urls.txt
+colors.json
+*.bak.*
+
+# Python generated files
+__pycache__/
+*.py[cod]
+
+# Local editor and operating-system files
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+.DS_Store
