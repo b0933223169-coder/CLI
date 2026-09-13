@@ -1,0 +1,16 @@
+建議將此檔案移動到桌面 其他路徑可能會被widnows阻擋 特別是電腦有很多槽的
+
+執行方式：
+  cmd環境使用方式： cd到指令路徑後可以直接用檔名.副檔名執行(cool.py)
+	範例 ：cd  C:\Users\kn\Desktop\cool_app 後 輸入cool.py 
+  powershell環境使用方式： 一樣先cd 不過執行腳本要改成python cool.py(以python執行) 
+	範例 ：cd  C:\Users\kn\Desktop\cool_app 後 輸入cool.py 
+
+環境卻認：
+  最好的情況：
+	在使用CLI前 如果缺少python套件或是有python但版本小於3.14 需更新至python3.14或以上，如果沒有python就執行檔案中的『check.bat』
+  有點麻煩的情況：
+	如果無法安裝 先嘗試右鍵點擊已管理員權限安裝，如果這樣也不行，可能跳出腳本有風險之類的，可以前往https://www.python.org/downloads/ 找到大於或等於3.14版本的python，然後下載之後即可使用
+
+
+第一次使用不知道指令可以cool -h裡面有所有指令的使用方式
