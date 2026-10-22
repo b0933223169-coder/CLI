@@ -1,0 +1,1 @@
+"""cool GUI package."""
