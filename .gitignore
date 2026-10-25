@@ -1,0 +1,40 @@
+# Local accounts, credentials, cookies, and user-specific settings/data
+/accounts.json
+/cookies/
+/cookies.txt
+/.cool_passwd
+/colors.json
+/urls.txt
+*.cookie
+*.cookies
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node dependencies, generated builds, and local workspace state
+node_modules/
+desktop/node_modules/
+desktop/out/
+desktop/dist/
+desktop/dist-login-cancel/
+desktop/.vscode/
+desktop/.eslintcache
+desktop/*.log*
+
+# OS/editor temporary files
+.DS_Store
+Thumbs.db
+*.tmp

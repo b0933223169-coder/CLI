@@ -1,0 +1,28 @@
+appId: tw.edu.coolenglish.desktop
+productName: cool
+directories:
+  buildResources: build
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintcache,eslint.config.mjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+extraResources:
+  - from: ..
+    to: cool-cli
+    filter:
+      - '*.py'
+      - 'commands/**/*.py'
+asarUnpack:
+  - resources/**
+  - node_modules/node-pty/**
+win:
+  executableName: cool
+nsis:
+  artifactName: ${name}-${version}-setup.${ext}
+  shortcutName: ${productName}
+  uninstallDisplayName: ${productName}
+  createDesktopShortcut: always
+npmRebuild: false
