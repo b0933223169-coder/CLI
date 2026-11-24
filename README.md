@@ -3,6 +3,13 @@
 > **這個儲存庫在 2026-11 整個換成了 Qt 版本。** 先前的 Python CLI + Electron 桌面版只存在於 git 歷史
 > （最後一個舊版提交：`803c881`），**目前的檔案全部都是新專案，與舊版無關。**
 
+## 下載（免編譯）
+
+到 **[Releases](https://github.com/b0933223169-coder/CLI/releases/latest)** 下載 `Cool-Desktop-win64-v1.0.0.zip`，解壓縮後雙擊 `Start Cool Desktop.bat`。
+需要 Windows 10/11、Python 3.10+（加入 PATH）、Microsoft Edge 或 Chrome。舊的 Python + Electron 版另存在 `legacy-python-electron` 發行版。
+
+---
+
 Windows 桌面工作台，用來管理 [coolenglish.edu.tw](https://coolenglish.edu.tw) 的帳號、課程連結與學習時數。
 由兩個部分組成，**桌面程式是 `cool.py` 的殼**：登入、報表、開課程、Cookie 都是呼叫 `cli/` 裡的 CLI 完成，不另外重寫邏輯。
 
@@ -42,7 +49,7 @@ Windows 桌面工作台，用來管理 [coolenglish.edu.tw](https://coolenglish.
 
 ### 建置
 
-需要 Qt 6.9.3（MSVC 2022 64 位元）、Visual Studio Build Tools、Ninja、Python 3。
+需要 Qt 6.9.3（MSVC 2022 64 位元）、Visual Studio Build Tools、Ninja、Python 3。`cool.py` 的依賴：`pip install -r cli/requirements.txt`。
 
 ```bat
 rebuild.bat          :: CMake + Ninja 建置到 build-main\
@@ -108,5 +115,10 @@ cool -t && (cool -c | cool -a)                      && | ; 串接與括號分組
 | `pty_bridge.*`、`term_buffer.*`、`wv_host.cpp`、`we_host.cpp`、`*_test.pro`、`webview_test.qml`、`wv_grab.py` | 舊的終端機與 WebView 實驗（已由 `qml_pty_bridge.*` 取代） |
 | `build.bat`、`build_cmake.bat`、`build_msvc.bat`、`build_main.bat`、`coolqml.pro`、`deploy_we.bat` | 舊的建置腳本（現行用 `rebuild.bat`、`deploy_main.bat`） |
 | `final_*.py`、`real_screen.py`、`scan_api.py`、`test_multiterm.py`、`migrate.ps1`、`check_cookie.py`、`fetch_report.py`、`dragtest.ps1` | 一次性的驗證與測試腳本 |
+
+## 授權與第三方元件
+
+目前尚未指定本專案的授權條款（見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)）。發行包含的 xterm.js、Windows Terminal ConPTY、
+Material Symbols、Qt 等第三方元件，授權與來源也列在該檔案。
 
 個人資料（帳號、Cookie、頭像、課程網址）不會被提交，見 `.gitignore`。

@@ -1,0 +1,3 @@
+# cool.py 的 Python 依賴（Python 3.10+）
+# 第一次執行 cool.py 時也會自動檢查並提示安裝；之後還要執行一次 playwright install（或使用系統的 Edge / Chrome）。
+playwright
