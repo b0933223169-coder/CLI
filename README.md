@@ -118,7 +118,7 @@ cool -t && (cool -c | cool -a)                      && | ; 串接與括號分組
 
 ## 授權與第三方元件
 
-目前尚未指定本專案的授權條款（見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)）。發行包含的 xterm.js、Windows Terminal ConPTY、
-Material Symbols、Qt 等第三方元件，授權與來源也列在該檔案。
+本專案的原始碼以 [MIT License](LICENSE) 授權。發行包含的 xterm.js、Windows Terminal ConPTY、Material Symbols、Qt 等第三方元件，
+各自維持原本的授權，來源與授權列在 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 個人資料（帳號、Cookie、頭像、課程網址）不會被提交，見 `.gitignore`。
