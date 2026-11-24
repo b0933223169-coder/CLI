@@ -4,6 +4,7 @@ conpty/** linguist-vendored
 assets/** linguist-vendored
 # backend_*.inc 是被 backend.cpp #include 的 C++ 片段
 *.inc linguist-language=C++
+*.h linguist-language=C++
 # 文字檔一律以 LF 儲存，避免 Windows 換行造成整檔差異
 * text=auto eol=lf
 *.bat text eol=crlf
