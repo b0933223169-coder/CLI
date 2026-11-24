@@ -1,0 +1,47 @@
+{
+  "repo_notes": [
+    {
+      "content": "This repository was completely replaced in 2026-11. Everything in the working tree is the NEW project: a Windows-only desktop app written in C++17 with Qt 6.9 (Qt Quick/QML and QtWebEngine), plus a Python command-line tool `cool.py` in the `cli/` folder. Ignore anything you may know about an earlier version of this repository that used Electron, React, TypeScript, node-pty, a `desktop/` folder or a PyQt6 `gui/` folder: those no longer exist and only appear in old git history. Do not mention them."
+    },
+    {
+      "content": "The desktop app is a thin shell around cool.py: login, reports, opening course links and cookies are all performed by running `python cli/cool.py ...` as a child process (see backend_cli.inc). The app only parses its output and syncs files (accounts.json, urls.txt, colors.json, cookies/, avatars/) with the CLI."
+    },
+    {
+      "content": "Only these C++ files are compiled (see CMakeLists.txt): main.cpp, backend.cpp (which #includes backend_native.inc and backend_cli.inc), color_engine.cpp, conpty.cpp, qml_pty_bridge.cpp, native.cpp. QML lives in qml/, the embedded terminal page and xterm.js assets in xterm/, and bundled ConPTY binaries in conpty/ (third-party, from Windows Terminal)."
+    },
+    {
+      "content": "cool.py command flow: lineedit.py (input) -> repl.py (splits a line on && | ; and expands parenthesised groups) -> dispatch.py (command table and -h help) -> modifiers.py (parses `> /show /timer /delay /at /repeat /clear /exit`) -> runner.py (waiting, repeating, time limits) -> commands/ (account.py, urls.py, time_report.py). help.py holds all help text."
+    }
+  ],
+  "pages": [
+    {
+      "title": "Overview",
+      "purpose": "What the project is: a Qt/QML Windows desktop shell around the cool.py CLI for managing Cool English accounts, course links and learning-time reports."
+    },
+    {
+      "title": "Desktop application architecture",
+      "purpose": "C++ Backend object, QML pages, how the backend talks to the CLI, DPAPI storage and file synchronisation.",
+      "parent": "Overview"
+    },
+    {
+      "title": "Embedded terminal",
+      "purpose": "xterm.js over QWebChannel connected to Windows ConPTY: tabs, history replay, handshake replies, resizing.",
+      "parent": "Overview"
+    },
+    {
+      "title": "cool.py command line tool",
+      "purpose": "Commands, the dispatcher, the `>` modifier timeline (delay/at, timer, clear/exit), parenthesised groups and chaining.",
+      "parent": "Overview"
+    },
+    {
+      "title": "Theming and colour engine",
+      "purpose": "OKLCH palette generation, contrast checks and the 24 theme presets.",
+      "parent": "Overview"
+    },
+    {
+      "title": "Building and running",
+      "purpose": "Qt 6.9.3 MSVC toolchain, rebuild.bat, deploy_main.bat and environment variables such as COOL_DATA_DIR and COOL_CLI_DIR.",
+      "parent": "Overview"
+    }
+  ]
+}
