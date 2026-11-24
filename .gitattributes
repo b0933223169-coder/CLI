@@ -1,0 +1,13 @@
+# GitHub 語言統計：第三方檔案不計入（xterm.js、ConPTY 二進位、字型）
+xterm/** linguist-vendored
+conpty/** linguist-vendored
+assets/** linguist-vendored
+# backend_*.inc 是被 backend.cpp #include 的 C++ 片段
+*.inc linguist-language=C++
+# 文字檔一律以 LF 儲存，避免 Windows 換行造成整檔差異
+* text=auto eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.dll binary
+*.exe binary
+*.ttf binary
