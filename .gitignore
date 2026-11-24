@@ -1,40 +1,54 @@
-# Local accounts, credentials, cookies, and user-specific settings/data
-/accounts.json
-/cookies/
-/cookies.txt
-/.cool_passwd
-/colors.json
-/urls.txt
-*.cookie
-*.cookies
-.env
-.env.*
-!.env.example
-*.pem
-*.key
-*.p12
-*.pfx
+# ── 建置產物 ──
+build/
+build-main/
+release/
+debug/
+*.obj
+*.pdb
+*.ilk
+*.o
+*.exe
+!conpty/OpenConsole.exe
+.qmake.stash
+CMakeCache.txt
+CMakeFiles/
 
-# Python caches and local environments
+# ── 個人資料：帳號、Cookie、密碼、頭像、課程網址（絕對不能公開）──
+cli/accounts.json
+cli/cookies/
+cli/avatars/
+cli/urls.txt
+cli/colors.json
+cli/credentials.json
+credentials.json
+accounts.json
+cookies/
+avatars/
+settings.json
+network/
+network.json
+*.log
+host.log
+probe.out
+autotest.out
+
+# ── 測試截圖與暫存（可能含帳號畫面）──
+*.png
+!assets/**/*.png
+*-shot*.png
+*.dmp
 __pycache__/
-*.py[cod]
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.venv/
-venv/
+*.pyc
+.cool_history
 
-# Node dependencies, generated builds, and local workspace state
-node_modules/
-desktop/node_modules/
-desktop/out/
-desktop/dist/
-desktop/dist-login-cancel/
-desktop/.vscode/
-desktop/.eslintcache
-desktop/*.log*
+# ── 大型工具與備份 ──
+vs_BuildTools.exe
+coolqml-mingw-backup.exe
+assets/fonts/MaterialSymbolsRounded.full.ttf
 
-# OS/editor temporary files
-.DS_Store
-Thumbs.db
-*.tmp
+# ── 編輯器 ──
+.vs/
+.vscode/
+*.user
+*.autosave
+.claude/

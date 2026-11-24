@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="xterm.css">
+<style>
+  html, body { margin:0; padding:0; height:100%; overflow:hidden; background:#1e1e1e; }
+  #terminal { position:absolute; top:6px; left:8px; right:4px; bottom:4px; }
+  #ctx { position:fixed; display:none; z-index:10; min-width:150px; padding:6px; border-radius:10px;
+         background:#2b2b2e; color:#eee; font:12px "Segoe UI", sans-serif; box-shadow:0 8px 28px rgba(0,0,0,.45);
+         border:1px solid rgba(255,255,255,.12); }
+  #ctx div { padding:7px 12px; border-radius:6px; cursor:pointer; display:flex; justify-content:space-between; gap:18px; }
+  #ctx div:hover { background:rgba(255,255,255,.12); }
+  #ctx div.off { opacity:.4; pointer-events:none; }
+  #ctx small { opacity:.55; }
+</style>
+</head>
+<body>
+<div id="terminal"></div>
+<div id="ctx"><div id="m-copy">複製 <small>Ctrl+Shift+C</small></div><div id="m-paste">貼上 <small>Ctrl+Shift+V</small></div><div id="m-all">全選</div><div id="m-clear">清除畫面</div></div>
+<script src="xterm.js"></script>
+<script src="addon-fit.js"></script>
+<script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+<script>
+const baseTheme = {
+  background:'#1e1e1e', foreground:'#d4d4d4', cursor:'#aeafad', selectionBackground:'#264f78',
+  black:'#000000', red:'#cd3131', green:'#0dbc79', yellow:'#e5e510',
+  blue:'#2472c8', magenta:'#bc3fbc', cyan:'#11a8cd', white:'#e5e5e5',
+  brightBlack:'#666666', brightRed:'#f14c4c', brightGreen:'#23d18b',
+  brightYellow:'#f5f543', brightBlue:'#3b8eea', brightMagenta:'#d670d6',
+  brightCyan:'#29b8db', brightWhite:'#ffffff'
+};
+const term = new Terminal({
+  fontFamily: '"Cascadia Mono", "Cascadia Code", Consolas, monospace',
+  fontSize: 14, lineHeight: 1.25, cursorBlink: true, cursorStyle: 'bar', cursorWidth: 2,
+  scrollback: 3000, allowProposedApi: true, theme: baseTheme,
+  // 後端是 Windows ConPTY：縮放時由 ConPTY 自己重排，xterm 不可再重新折行，
+  // 否則兩邊游標位置對不上，輸入的字會跑到上面去
+  windowsPty: { backend: 'conpty', buildNumber: 22621 }
+});
+const fit = new FitAddon.FitAddon();
+term.loadAddon(fit);
+term.open(document.getElementById('terminal'));
+fit.fit();
+function toB64(str){ const b=new TextEncoder().encode(str); let s='';
+  for(let i=0;i<b.length;i++) s+=String.fromCharCode(b[i]); return btoa(s); }
+function fromB64(b64){ const s=atob(b64);
+  const u=Uint8Array.from(s,c=>c.charCodeAt(0)); return new TextDecoder().decode(u); }
+
+// 過濾 cool.py 送出的 OSC 10/11/12（會把終端預設色改成它自己的主題色），保留所有文字 CSI 顏色
+function cleanOutput(s){ return s.replace(/\x1b\](?:10|11|12);[^\x07\x1b]*(?:\x07|\x1b\\)/g, ''); }
+
+let cfg = null;
+let replaying = true;        // 連上 shell、歷史重播完成前，忽略 xterm 自動產生的回覆
+function applyConfig(){
+  if (!cfg) return;
+  let o; try { o = JSON.parse(cfg.json); } catch(e) { return; }
+  const theme = Object.assign({}, baseTheme, { background:o.background, foreground:o.foreground, cursor:o.cursor, cursorAccent:o.background });
+  term.options.theme = theme;
+  term.options.fontSize = o.fontSize;
+  term.options.fontFamily = '"' + o.fontFamily + '", "Cascadia Mono", Consolas, monospace';
+  document.body.style.background = o.background;
+  fit.fit();
+}
+let pendingPaste = false;
+function doCopy(){
+  const t = term.getSelection();
+  if (t && cfg) { cfg.copyText(t); term.clearSelection(); return true; }
+  return false;
+}
+function doPaste(){ if (cfg) cfg.pasteText(function(t){ if (t) term.paste(t); }); }
+
+term.attachCustomKeyEventHandler(function(e){
+  if (e.type !== 'keydown') return true;
+  const k = e.key.toLowerCase();
+  if (e.ctrlKey && e.shiftKey && k === 'c') { doCopy(); return false; }
+  if (e.ctrlKey && e.shiftKey && k === 'v') { e.preventDefault(); doPaste(); return false; }
+  if (e.ctrlKey && !e.shiftKey && k === 'c' && term.hasSelection()) { doCopy(); return false; }
+  if (e.ctrlKey && !e.shiftKey && k === 'v') { e.preventDefault(); doPaste(); return false; }
+  return true;
+});
+
+const ctx = document.getElementById('ctx');
+document.addEventListener('contextmenu', function(e){
+  e.preventDefault();
+  document.getElementById('m-copy').className = term.hasSelection() ? '' : 'off';
+  ctx.style.display = 'block';
+  ctx.style.left = Math.min(e.clientX, window.innerWidth - 170) + 'px';
+  ctx.style.top = Math.min(e.clientY, window.innerHeight - 150) + 'px';
+});
+document.addEventListener('mousedown', function(e){ if (!ctx.contains(e.target)) ctx.style.display = 'none'; });
+document.getElementById('m-copy').onclick = function(){ doCopy(); ctx.style.display='none'; term.focus(); };
+document.getElementById('m-paste').onclick = function(){ doPaste(); ctx.style.display='none'; term.focus(); };
+document.getElementById('m-all').onclick = function(){ term.selectAll(); ctx.style.display='none'; term.focus(); };
+document.getElementById('m-clear').onclick = function(){ term.clear(); ctx.style.display='none'; term.focus(); };
+
+new QWebChannel(qt.webChannelTransport, function(channel){
+  const pty = channel.objects.pty;
+  cfg = channel.objects.cfg;
+  if (cfg) { applyConfig(); cfg.changed.connect(applyConfig); }
+  // C++ 端 QTimer 定期 emit outputReady（base64），JS 只需接收
+  pty.outputReady.connect(function(b64){
+    try { term.write(cleanOutput(fromB64(b64))); } catch(e) {}
+  });
+  // 切換分頁後重新載入：先重播完整歷史。重播的內容裡有舊的終端查詢（裝置屬性、游標位置），
+  // xterm 會自動回覆，這些回覆不能當成使用者輸入送進 shell（否則會出現 ^[[?1;2c 之類亂碼）。
+  pty.historyReady.connect(function(b64){
+    if (!b64) { replaying = false; return; }
+    try { term.write(cleanOutput(fromB64(b64)), function(){ replaying = false; term.scrollToBottom(); }); }
+    catch(e) { replaying = false; }
+  });
+  // 通知 C++ 立刻把連上前累積的輸出送出
+  pty.flush();
+  term.onData(function(data){ if (replaying) return; pty.sendInput(toB64(data)); });
+  // 拖曳調整大小時會連續觸發：只把最後的尺寸送給 ConPTY，避免中途重排造成畫面錯位
+  let resizeTimer = null;
+  term.onResize(function(e){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function(){
+      pty.resize(term.cols, term.rows);
+    }, 120);
+  });
+  pty.resize(term.cols, term.rows);
+  term.focus();
+});
+document.fonts.ready.then(function(){ fit.fit(); });
+window.addEventListener('resize', function(){ fit.fit(); });
+window.addEventListener('focus', function(){ fit.fit(); term.focus(); });
+</script>
+</body>
+</html>

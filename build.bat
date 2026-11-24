@@ -1,40 +1,24 @@
 @echo off
-setlocal
-chcp 65001 >nul
-cls
+REM 用 MinGW 版 Qt 編譯 coolqml host（完全不依賴 Python / Visual Studio）
+set QT_DIR=C:\Qt\6.9.3\mingw_64
+set MINGW_DIR=C:\Qt\Tools\mingw1310_64
+set PATH=%QT_DIR%\bin;%MINGW_DIR%\bin;%PATH%
 
-echo.
-echo ===================================================
-echo   Cool Desktop — 建置 Windows 安裝程式
-echo ===================================================
-echo.
+cd /d C:\Users\jusaper\Downloads\coolqml-rs
 
-pushd "%~dp0desktop"
-if not exist node_modules (
-    echo [1/2] Installing desktop app dependencies...
-    call npm ci
-    if errorlevel 1 (
-        echo [FAILED] npm ci failed.
-        popd
-        pause
-        exit /b 1
-    )
-)
-echo [2/2] Building the Windows installer...
-call npm run build:win
-if errorlevel 1 (
-    echo.
-    echo [FAILED] Build failed. See the error output above.
-    popd
-    pause
-    exit /b 1
-)
-popd
+echo === qmake ===
+%QT_DIR%\bin\qmake.exe coolqml.pro -spec win32-g++ "CONFIG+=release"
+if errorlevel 1 goto fail
 
-echo.
-echo ===================================================
-echo   [SUCCESS] Build complete!
-echo   Installer output: desktop\dist
-echo ===================================================
-echo.
-pause
+echo === make ===
+%MINGW_DIR%\bin\mingw32-make.exe -j4
+if errorlevel 1 goto fail
+
+echo === 完成 ===
+dir release\coolqml.exe
+goto end
+
+:fail
+echo 編譯失敗
+exit /b 1
+:end

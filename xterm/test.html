@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="xterm.css">
+<style>
+  html, body { margin:0; padding:0; height:100%; background:#1e1e1e; overflow:hidden; }
+  #terminal { position:absolute; top:10px; left:10px; right:10px; bottom:10px; }
+</style>
+</head>
+<body>
+<div id="terminal"></div>
+<script src="xterm.js"></script>
+<script src="addon-fit.js"></script>
+<script>
+const term = new Terminal({
+  fontFamily: '"Cascadia Mono", Consolas, monospace',
+  fontSize: 14, lineHeight: 1.25, cursorBlink: true, cursorStyle: 'bar',
+  theme: { background:'#1e1e1e', foreground:'#d4d4d4', cursor:'#aeafad',
+           selectionBackground:'#264f78', green:'#0dbc79', blue:'#2472c8' }
+});
+const fit = new FitAddon.FitAddon();
+term.loadAddon(fit);
+term.open(document.getElementById('terminal'));
+fit.fit();
+term.write('\x1b[1;32m  ✓ xterm.js running in WebView2\x1b[0m\r\n\r\n');
+term.write('$ cool -t\r\n');
+term.write('\x1b[90m正在取得學習時數...\x1b[0m\r\n');
+term.write('\x1b[32m[ OK ]\x1b[0m 報表已更新：28 筆\r\n');
+term.write('\x1b[1;34mcool>\x1b[0m ');
+</script>
+</body>
+</html>
