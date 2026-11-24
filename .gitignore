@@ -1,4 +1,5 @@
 # ── 建置產物 ──
+dist/
 build/
 build-main/
 release/
