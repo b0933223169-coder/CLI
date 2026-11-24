@@ -41,10 +41,9 @@ __pycache__/
 *.pyc
 .cool_history
 
-# ── 大型工具與備份 ──
+# ── 第三方安裝程式與舊的編譯產物（不是原始碼）──
 vs_BuildTools.exe
 coolqml-mingw-backup.exe
-assets/fonts/MaterialSymbolsRounded.full.ttf
 
 # ── 編輯器 ──
 .vs/

@@ -97,4 +97,16 @@ cool -t && (cool -c | cool -a)                      && | ; 串接與括號分組
 | `shots.ps1`、`auditcli.ps1` | 截圖與 CLI 檢查 |
 | `COOL_STALL_LOG=1` | 記錄介面卡頓與畫面更新率 |
 
+## 舊實驗檔（不會被編譯）
+
+為了完整保留開發過程，這些檔案仍在儲存庫裡，但**不屬於現行建置**（`CMakeLists.txt` 只編譯 `main.cpp`、`backend.cpp`、
+`color_engine.cpp`、`conpty.cpp`、`qml_pty_bridge.cpp`、`native.cpp`）：
+
+| 檔案 | 說明 |
+| --- | --- |
+| `core.cpp`、`slots_part1~4.cpp`、`helper_add.cpp`、`gen_*.py`、`assemble.py` | 早期把後端拆成片段再組裝的實驗 |
+| `pty_bridge.*`、`term_buffer.*`、`wv_host.cpp`、`we_host.cpp`、`*_test.pro`、`webview_test.qml`、`wv_grab.py` | 舊的終端機與 WebView 實驗（已由 `qml_pty_bridge.*` 取代） |
+| `build.bat`、`build_cmake.bat`、`build_msvc.bat`、`build_main.bat`、`coolqml.pro`、`deploy_we.bat` | 舊的建置腳本（現行用 `rebuild.bat`、`deploy_main.bat`） |
+| `final_*.py`、`real_screen.py`、`scan_api.py`、`test_multiterm.py`、`migrate.ps1`、`check_cookie.py`、`fetch_report.py`、`dragtest.ps1` | 一次性的驗證與測試腳本 |
+
 個人資料（帳號、Cookie、頭像、課程網址）不會被提交，見 `.gitignore`。

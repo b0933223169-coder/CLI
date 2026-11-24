@@ -11,6 +11,9 @@
     },
     {
       "content": "cool.py command flow: lineedit.py (input) -> repl.py (splits a line on && | ; and expands parenthesised groups) -> dispatch.py (command table and -h help) -> modifiers.py (parses `> /show /timer /delay /at /repeat /clear /exit`) -> runner.py (waiting, repeating, time limits) -> commands/ (account.py, urls.py, time_report.py). help.py holds all help text."
+    },
+    {
+      "content": "The repository root also contains many legacy experiment files that are NOT part of the build and should not be described as architecture: core.cpp, slots_part1-4.cpp, helper_add.cpp, pty_bridge.*, term_buffer.*, wv_host.cpp, we_host.cpp, *.pro, webview_test.qml, gen_*.py, assemble.py, final_*.py, build.bat, build_cmake.bat, build_msvc.bat, build_main.bat, deploy_we.bat and one-off test scripts. Mention them at most in one short 'legacy files' paragraph. The real build is defined only by CMakeLists.txt."
     }
   ],
   "pages": [
